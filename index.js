@@ -1,13 +1,18 @@
 const express = require("express");
-const port = 3000
+const sequelize = require("./Database/db");
+const port = 3000;
 
 const app = express();
 app.use(express.json());
 
-app.get("/", function(req, res) {
-    res.send("Hello, World!")
-})
+app.use("/cards", require("./Routes/cardRoutes"));
 
-app.listen(port, () => {
-    console.log(`Server: http://localhost:${port}`);
-})
+app.get("/", (req, res) => {
+    res.send("Hello, World!");
+});
+
+sequelize.sync().then(() => {
+    app.listen(port, () => {
+        console.log(`Server: http://localhost:${port}`);
+    });
+});
